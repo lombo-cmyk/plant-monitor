@@ -1,0 +1,10 @@
+services:
+  illumination:
+    build: illumination/.
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+      - /dev/gpiochip0:/dev/gpiochip0
+      - /dev/gpiochip1:/dev/gpiochip1
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=debug
