@@ -13,13 +13,10 @@ logger.addHandler(consoleHandler)
 
 led = LED(14)
 
-
-
-while True: # Run forever
-    led.on()
-    logger.info("Loop")
-    print("123")
-    sleep(1)                  # Sleep for 1 second
-    led.off()
-
-    sleep(1)                  # Sleep for 1 second
+def run():
+    while True: # Run forever
+        led.on()
+        logger.info("going through the loop")
+        sleep(1)
+        led.off()
+        sleep(1)
