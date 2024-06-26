@@ -8,5 +8,6 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - LOG_LEVEL=debug
+      - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
