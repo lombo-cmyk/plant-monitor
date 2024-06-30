@@ -24,6 +24,22 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
+  diagnostics:
+    depends_on:
+      - mosquitto-broker
+    build:
+      context: ./
+      dockerfile: ./diagnostics/Dockerfile
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+      - /dev/gpiochip0:/dev/gpiochip0
+      - /dev/gpiochip1:/dev/gpiochip1
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=debug
+      - TZ=Europe/Warsaw
+    volumes:
+      - ./logs:/var/logs
 
 networks:
   default:
