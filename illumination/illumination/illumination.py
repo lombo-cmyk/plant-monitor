@@ -1,26 +1,29 @@
-import schedule
+from functools import partial
+from threading import Thread
 from time import sleep
+
+import schedule
 from gpiozero import LED
 from paho.mqtt.client import Client
-from functools import partial
-from typing import Optional
+
 from illumination.logger import logger
 from illumination.model import LedState
-from threading import Thread
 
 led = LED(14)
 LED_ON_TIME_S = 5
 
+
 def led_job(client: Client):
-    logger.info(f"Turning LED ON.")
+    logger.info("Turning LED ON.")
     led.on()
     client.publish("led/state", payload=LedState.build(True).model_dump_json())
 
     def turn_led_off():
         sleep(LED_ON_TIME_S)
-        logger.info(f"Turning LED OFF.")
+        logger.info("Turning LED OFF.")
         led.off()
         client.publish("led/state", payload=LedState.build(False).model_dump_json())
+
     th = Thread(target=turn_led_off)
     th.start()
 

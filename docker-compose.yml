@@ -3,7 +3,7 @@ services:
     image: eclipse-mosquitto
     container_name: mosquitto-broker
     ports:
-      - "1883:1883" # default 
+      - "1883:1883" # default
       - "9001:9001" # websockets
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
