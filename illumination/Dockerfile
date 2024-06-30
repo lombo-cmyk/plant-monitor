@@ -2,8 +2,11 @@ FROM python:3
 
 WORKDIR /usr/src/app
 
-COPY . illumination/
+COPY ./illumination/ illumination/
+COPY ./plant_common/ plant_common/
 
+RUN pip install --no-cache-dir -r ./plant_common/requirements.txt
+RUN pip install ./plant_common
 RUN pip install --no-cache-dir -r ./illumination/requirements.txt
 RUN pip install ./illumination
 

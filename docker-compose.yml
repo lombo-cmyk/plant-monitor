@@ -11,7 +11,9 @@ services:
   illumination:
     depends_on:
       - mosquitto-broker
-    build: illumination/.
+    build:
+      context: ./
+      dockerfile: ./illumination/Dockerfile
     devices:
       - /dev/gpiomem:/dev/gpiomem
       - /dev/gpiochip0:/dev/gpiochip0
