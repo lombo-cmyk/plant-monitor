@@ -1,5 +1,16 @@
 services:
+  mosquitto-broker:
+    image: eclipse-mosquitto
+    container_name: mosquitto-broker
+    ports:
+      - "1883:1883" # default 
+      - "9001:9001" # websockets
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./logs:/mosquitto/log
   illumination:
+    depends_on:
+      - mosquitto-broker
     build: illumination/.
     devices:
       - /dev/gpiomem:/dev/gpiomem
@@ -11,3 +22,7 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
+
+networks:
+  default:
+    name: "plants-default"
