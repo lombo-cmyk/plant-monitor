@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 COPY ./camera/ camera/
 COPY ./plant_common/ plant_common/
+COPY ./.env /config/.env
 
 RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 

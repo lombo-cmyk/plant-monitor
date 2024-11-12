@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 COPY ./diagnostics/ diagnostics/
 COPY ./plant_common/ plant_common/
+COPY ./.env /config/.env
 
 RUN pip install --no-cache-dir -r ./plant_common/requirements.txt
 RUN pip install ./plant_common

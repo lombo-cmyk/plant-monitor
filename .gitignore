@@ -1,3 +1,6 @@
+# platform logs
+logs/
+
 # visual studio code
 .vscode/
 
