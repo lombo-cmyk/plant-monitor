@@ -9,3 +9,6 @@ stop:
 	docker compose down
 
 restart: stop start
+
+build-base:
+	docker build -f base/Dockerfile -t python_base:latest .
