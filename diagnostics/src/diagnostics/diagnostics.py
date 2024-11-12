@@ -5,12 +5,30 @@ from time import sleep
 import schedule
 from gpiozero import MCP3008
 
+from diagnostics.mock_devices import MockMCP3008
+from plant_common.env import config
 from plant_common.logger import get_logger
 from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
 
 logger = get_logger("diagnostics")
 led_on = False
+
+
+def get_thermistor() -> MCP3008:
+    if config["THERMISTOR"] is True:
+        logger.info("Thermistor present in config. Using real device.")
+        return MCP3008(0)
+    logger.warning("Thermistor not present in config. Using MOCK")
+    return MockMCP3008(0)
+
+
+def get_photoresistor():
+    if config["PHOTORESISTOR"] is True:
+        logger.info("hotoresistor present in config. Using real device.")
+        return MCP3008(1)
+    logger.warning("Photoresistor not present in config. Using MOCK")
+    return MockMCP3008(1)
 
 
 def read_thermistor(thermistor: MCP3008) -> int:
@@ -66,8 +84,8 @@ def handle_led_state(topic, message):
 
 
 def run():
-    thermistor = MCP3008(0)
-    photoresistor = MCP3008(1)
+    thermistor = get_thermistor()
+    photoresistor = get_photoresistor()
     mqtt_client = MqttClient(client_id="diagnostics", transport="websockets")
     mqtt_client.connect(host="mosquitto-broker", port=9001)
     mqtt_client.subscribe(
