@@ -1,6 +1,6 @@
 .PHONY: start, build, stop
 build:
-	docker compose build
+	BUILDKIT_COLORS="run=light-cyan" docker compose build
 
 start:
 	docker compose up -d
