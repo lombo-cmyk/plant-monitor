@@ -2,9 +2,14 @@
 
 ## .env file content
 
-THERMISTOR=bool - true/false - Thermistor is present(true) or should be mocked(false)
-PHOTORESISTOR=bool - true/false - Photoresistor is present(true) or should be mocked(false)
-
+| Variable           | Mandatory |  type  |                      Description                        |
+|--------------------|-----------|--------|---------------------------------------------------------|
+| `THERMISTOR`       |   True    | `bool` | Thermistor is present(true) or should be mocked         |
+| `PHOTORESISTOR`    |   True    | `bool` | Photoresistor is present(true) or should be mocked      |
+| `CAMERA`           |   True    | `bool` | USB camera is present(true) or should be mocked         |
 
 ## How to
-1. Remember to `make build-base` before building images
+1. Create `.env` file with variables mentioned above
+1. `make build-base` before building images - needed just once
+1. `make build` to build all
+1. `make start` to start all

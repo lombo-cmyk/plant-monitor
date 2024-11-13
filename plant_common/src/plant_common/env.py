@@ -1,13 +1,13 @@
 from dotenv import dotenv_values
 
-from .singleton import singleton
+from plant_common.singleton import singleton
 
 
 @singleton
 class _ParseConfig:
 
     def __init__(self):
-        self._config = dotenv_values("/config/.env")
+        self._config = dotenv_values("/usr/src/app/config/.env")
         self.config = {}
         self.parse_config()
 

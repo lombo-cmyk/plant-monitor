@@ -24,6 +24,7 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
+      - .env:/usr/src/app/config/.env
   diagnostics:
     depends_on:
       - mosquitto-broker
@@ -40,6 +41,7 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
+      - .env:/usr/src/app/config/.env
   camera:
     depends_on:
       - mosquitto-broker
@@ -56,6 +58,7 @@ services:
       - TZ=Europe/Warsaw
     volumes:
       - ./logs:/var/logs
+      - .env:/usr/src/app/config/.env
 
 networks:
   default:
