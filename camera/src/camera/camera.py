@@ -11,7 +11,7 @@ from plant_common.mqtt import MqttClient
 logger = get_logger("camera")
 
 
-def handle_led_state(topic, message):
+def handle_led_state(client: MqttClient, topic: str, message: LedState):
     if message.state is True:
         logger.info("Taking picture")
         sleep(5)  # let camera get the focus

@@ -79,7 +79,7 @@ def diagnostics_job(client: MqttClient, thermistor: MCP3008, photoresistor: MCP3
     brightness = read_photoresistor(photoresistor)  # noqa: F841
 
 
-def handle_led_state(topic, message):
+def handle_led_state(client: MqttClient, topic: str, message: LedState):
     logger.info(f"Handle led state: {topic}, {message}")
 
 

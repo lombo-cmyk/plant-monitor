@@ -16,7 +16,9 @@ class MqttClient(Client):
 
     def on_message_custom(self, client, userdata, msg):
         handler, payload_class = self.handlers[msg.topic]
-        handler(msg.topic, payload_class.model_validate_json(msg.payload.decode()))
+        handler(
+            self, msg.topic, payload_class.model_validate_json(msg.payload.decode())
+        )
 
     def subscribe(
         self,
