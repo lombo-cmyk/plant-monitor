@@ -1,8 +1,10 @@
 import logging
+import logging.handlers
 from sys import stdout
 
 
 def get_logger(name: str):
+
     logger = logging.getLogger(name)
 
     logger.setLevel(logging.DEBUG)
@@ -11,8 +13,12 @@ def get_logger(name: str):
     )
     consoleHandler = logging.StreamHandler(stdout)
     consoleHandler.setFormatter(logFormatter)
-    fileHandler = logging.FileHandler(filename=f"/var/logs/{name}.log")
-    fileHandler.setFormatter(logFormatter)
+
+    timedRotatingHandler = logging.handlers.TimedRotatingFileHandler(
+        filename=f"/var/logs/{name}.log", when="D", interval=7, backupCount=4
+    )
+    timedRotatingHandler.setFormatter(logFormatter)
+
+    logger.addHandler(timedRotatingHandler)
     logger.addHandler(consoleHandler)
-    logger.addHandler(fileHandler)
     return logger
