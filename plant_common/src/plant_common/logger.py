@@ -19,6 +19,9 @@ def get_logger(name: str):
     )
     timedRotatingHandler.setFormatter(logFormatter)
 
+    timedRotatingHandler.doRollover()
+
     logger.addHandler(timedRotatingHandler)
     logger.addHandler(consoleHandler)
+
     return logger
