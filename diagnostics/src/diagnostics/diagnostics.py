@@ -1,3 +1,4 @@
+import logging
 import math
 from functools import partial
 from time import sleep
@@ -12,23 +13,24 @@ from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
 
 logger = get_logger("diagnostics")
+logger.setLevel(logging.WARNING)
 led_on = False
 
 
 def get_thermistor() -> MCP3008:
     if config["THERMISTOR"] is True:
         logger.info("Thermistor present in config. Using real device.")
-        return MCP3008(0)
+        return MCP3008(1)
     logger.warning("Thermistor not present in config. Using MOCK")
-    return MockMCP3008(0)
+    return MockMCP3008(1)
 
 
 def get_photoresistor():
     if config["PHOTORESISTOR"] is True:
         logger.info("hotoresistor present in config. Using real device.")
-        return MCP3008(1)
+        return MCP3008(0)
     logger.warning("Photoresistor not present in config. Using MOCK")
-    return MockMCP3008(1)
+    return MockMCP3008(0)
 
 
 def read_thermistor(thermistor: MCP3008) -> int:
@@ -40,14 +42,18 @@ def read_thermistor(thermistor: MCP3008) -> int:
     default_temp_k = 25 + 273.15
     beta = 3950
     max_digital_reading = 1023
-    temperature = (
-        1
-        / (
-            1 / default_temp_k
-            + math.log(max_digital_reading / thermistor_digital_value - 1) / beta
+    try:
+        temperature = (
+            1
+            / (
+                1 / default_temp_k
+                + math.log(max_digital_reading / thermistor_digital_value - 1) / beta
+            )
+            - 273.15
         )
-        - 273.15
-    )
+    except ZeroDivisionError:
+        logger.error("ZeroDivisionError...")
+        temperature = 0
     temperature = int(temperature)
     logger.debug(f"Measured temperature is: {temperature}")
     if temperature > 55:
@@ -94,7 +100,7 @@ def run():
     mqtt_client.loop_start()
     fun = partial(
         diagnostics_job,
-        client=mqtt_client,
+        client=None,
         thermistor=thermistor,
         photoresistor=photoresistor,
     )

@@ -8,6 +8,7 @@ services:
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./logs:/mosquitto/log
+    restart: always
   illumination:
     depends_on:
       - mosquitto-broker
@@ -25,6 +26,7 @@ services:
     volumes:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
+    restart: always
   diagnostics:
     depends_on:
       - mosquitto-broker
@@ -35,6 +37,7 @@ services:
       - /dev/gpiomem:/dev/gpiomem
       - /dev/gpiochip0:/dev/gpiochip0
       - /dev/gpiochip1:/dev/gpiochip1
+      - /dev/spidev0.0:/dev/spidev0.0
     environment:
       - PYTHONUNBUFFERED=1
       - LOG_LEVEL=debug
@@ -42,6 +45,7 @@ services:
     volumes:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
+    restart: always
   camera:
     depends_on:
       - mosquitto-broker
@@ -59,6 +63,7 @@ services:
     volumes:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
+    restart: always
 
 networks:
   default:

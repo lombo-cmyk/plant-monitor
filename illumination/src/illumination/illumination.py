@@ -11,11 +11,11 @@ from plant_common.mqtt import MqttClient
 
 logger = get_logger("illumination")
 led = LED(14)
-LED_ON_TIME_S = 5
+LED_ON_TIME_S = 5 * 60
 
 
 def led_job(client: MqttClient):
-    logger.info("Turning LED ON.")
+    logger.info(f"Turning LED ON for {LED_ON_TIME_S}s.")
     led.on()
     client.publish("led/state", LedState.build(True))
 
@@ -33,7 +33,7 @@ def run():
     mqtt_client = MqttClient(client_id="illumination", transport="websockets")
     mqtt_client.connect(host="mosquitto-broker", port=9001)
     fun = partial(led_job, client=mqtt_client)
-    schedule.every(10).seconds.do(fun)
+    schedule.every().hour.at(":01").do(fun)
     while True:
         schedule.run_pending()
         sleep(1)

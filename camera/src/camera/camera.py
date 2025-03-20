@@ -4,6 +4,7 @@ from time import sleep
 import cv2
 import schedule
 
+from plant_common.env import config
 from plant_common.logger import get_logger
 from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
@@ -15,10 +16,11 @@ def handle_led_state(client: MqttClient, topic: str, message: LedState):
     if message.state is True:
         logger.info("Taking picture")
         sleep(5)  # let camera get the focus
-        cam = cv2.VideoCapture(0)
-        _, image = cam.read()
-        cv2.imwrite("/var/logs/testimage.jpg", image)
-        cam.release()
+        if config["CAMERA"] is True:  # TODO: temporary
+            cam = cv2.VideoCapture(0)
+            _, image = cam.read()
+            cv2.imwrite("/var/logs/testimage.jpg", image)
+            cam.release()
 
 
 def camera_job(client: MqttClient):

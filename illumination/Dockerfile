@@ -11,4 +11,6 @@ RUN pip install ./plant_common
 RUN pip install --no-cache-dir -r ./illumination/requirements.txt
 RUN pip install ./illumination
 
+ENV TZ="Europe/Warsaw""
+
 CMD [ "python", "-m", "illumination" ]

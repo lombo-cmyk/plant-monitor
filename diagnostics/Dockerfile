@@ -11,4 +11,6 @@ RUN pip install ./plant_common
 RUN pip install --no-cache-dir -r ./diagnostics/requirements.txt
 RUN pip install ./diagnostics
 
+ENV TZ="Europe/Warsaw"
+
 CMD [ "python", "-m", "diagnostics" ]
