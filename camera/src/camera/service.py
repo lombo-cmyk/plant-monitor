@@ -17,7 +17,7 @@ class Service(BaseService):
         )
 
     def _setup_scheduled_jobs(self, *args, **kwargs):
-        schedule.every(10).seconds.do(self.camera_job)
+        schedule.every(10).hours.do(self.camera_job)
 
     def handle_led_state(self, client: MqttClient, topic: str, message: LedState):
         if message.state is True:
