@@ -1,4 +1,6 @@
 .PHONY: start, build, build-, build-base stop
+compose:
+	python ./build_helpers/generate_compose.py
 build:
 	BUILDKIT_COLORS="run=light-cyan" docker compose build
 

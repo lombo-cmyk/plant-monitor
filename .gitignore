@@ -1,6 +1,9 @@
 # platform logs
 logs/
 
+# generated compose file
+docker-compose.yml
+
 # visual studio code
 .vscode/
 
