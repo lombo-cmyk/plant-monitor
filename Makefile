@@ -1,4 +1,4 @@
-.PHONY: start, build, build-, build-base stop
+.PHONY: compose, build, build-, build-base, start, stop, restart, logs-
 compose:
 	python ./build_helpers/generate_compose.py
 build:
@@ -17,3 +17,6 @@ stop:
 	docker compose down
 
 restart: stop start
+
+logs-%:
+	docker logs $* -f
