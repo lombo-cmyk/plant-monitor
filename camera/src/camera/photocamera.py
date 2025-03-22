@@ -25,6 +25,17 @@ class Camera:
         config_widget.set_value(capture_target)
         self.camera.set_single_config("capturetarget", config_widget)
 
+    def get_battery_level(self) -> str:
+        """
+        Get battery level.
+        Probably will only return 0/50/75/100%
+        """
+        config_widget = self.camera.get_single_config("batterylevel")
+        battery_level = config_widget.get_value()
+        self.logger.info(f"Battery level value: {battery_level}")
+
+        return battery_level
+
     def capture(self):
         """
         Smile.
