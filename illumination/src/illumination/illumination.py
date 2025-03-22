@@ -30,7 +30,7 @@ def led_job(client: MqttClient):
 
 
 def run():
-    mqtt_client = MqttClient(client_id="illumination", transport="websockets")
+    mqtt_client = MqttClient(logger, client_id="illumination", transport="websockets")
     mqtt_client.connect(host="mosquitto-broker", port=9001)
     fun = partial(led_job, client=mqtt_client)
     schedule.every().hour.at(":01").do(fun)

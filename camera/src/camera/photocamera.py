@@ -41,7 +41,7 @@ class Camera:
 
     def _save(self, camera_file_path):
         _name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        storage_path = f"/var/logs/{_name}.jpg"  # TODO: directory
+        storage_path = f"/var/pictures/{_name}.jpg"
         self.logger.info(f"Saving new image to {storage_path}")
         camera_file = self.camera.file_get(
             camera_file_path.folder, camera_file_path.name, gp.GP_FILE_TYPE_NORMAL

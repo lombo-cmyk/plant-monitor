@@ -12,7 +12,9 @@ class BaseService:
         self.name = name
         self.logger = logger
         self.client = (
-            client if client else MqttClient(client_id=name, transport="websockets")
+            client
+            if client
+            else MqttClient(logger, client_id=name, transport="websockets")
         )
 
     def _subscribe(self, *args, **kwargs):

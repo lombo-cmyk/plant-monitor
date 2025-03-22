@@ -70,6 +70,7 @@ services:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
       - /dev/bus/usb:/dev/bus/usb
+      - ./pictures:/var/pictures
     restart: always
 
 networks:

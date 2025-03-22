@@ -92,7 +92,7 @@ def handle_led_state(client: MqttClient, topic: str, message: LedState):
 def run():
     thermistor = get_thermistor()
     photoresistor = get_photoresistor()
-    mqtt_client = MqttClient(client_id="diagnostics", transport="websockets")
+    mqtt_client = MqttClient(logger, client_id="diagnostics", transport="websockets")
     mqtt_client.connect(host="mosquitto-broker", port=9001)
     mqtt_client.subscribe(
         topic="led/state", handler=handle_led_state, payload_class=LedState
