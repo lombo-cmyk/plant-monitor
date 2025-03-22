@@ -21,9 +21,16 @@ class BaseService:
     def _setup_scheduled_jobs(self, *args, **kwargs):
         raise NotImplementedError
 
+    def _pre_run(self, *args, **kwargs):
+        """
+        Overwrite with any service-specific pre_run code if needed
+        """
+        pass
+
     def run(self):
         self.logger.info(f"Starting service {self.name}")
 
+        self._pre_run()
         self._setup_mqtt()
         self._setup_scheduled_jobs()
 

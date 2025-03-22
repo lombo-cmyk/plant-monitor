@@ -10,6 +10,7 @@ services:
       - ./logs:/mosquitto/log
     restart: always
   illumination:
+    container_name: illumination
     depends_on:
       - mosquitto-broker
     build:
@@ -28,6 +29,7 @@ services:
       - .env:/usr/src/app/config/.env
     restart: always
   diagnostics:
+    container_name: diagnostics
     depends_on:
       - mosquitto-broker
     build:
@@ -49,8 +51,10 @@ services:
       - .env:/usr/src/app/config/.env
     restart: always
   camera:
+    container_name: camera
     depends_on:
       - mosquitto-broker
+    privileged: true
     build:
       context: ./
       dockerfile: ./camera/Dockerfile
@@ -65,6 +69,7 @@ services:
     volumes:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
+      - /dev/bus/usb:/dev/bus/usb
     restart: always
 
 networks:
