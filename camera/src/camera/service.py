@@ -1,15 +1,19 @@
 from time import sleep
 
-import cv2
-import schedule
-
 from plant_common.env import config
 from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
 from plant_common.service import BaseService
 
+from camera.photocamera import Camera
+
 
 class Service(BaseService):
+
+    def _pre_run(self, *args, **kwargs):
+        camera = Camera(self.logger)
+        camera.set_capture_target()
+        camera.exit()
 
     def _subscribe(self, *args, **kwargs):
         self.client.subscribe(
@@ -17,17 +21,13 @@ class Service(BaseService):
         )
 
     def _setup_scheduled_jobs(self, *args, **kwargs):
-        schedule.every(10).hours.do(self.camera_job)
+        pass
 
     def handle_led_state(self, client: MqttClient, topic: str, message: LedState):
         if message.state is True:
             self.logger.info("Taking picture")
-            sleep(5)  # let camera get the focus
-            if config["CAMERA"] is True:  # TODO: temporary
-                cam = cv2.VideoCapture(0)
-                _, image = cam.read()
-                cv2.imwrite("/var/logs/testimage.jpg", image)
-                cam.release()
-
-    def camera_job(self):
-        self.logger.info("Dummy camera job triggered")
+            sleep(5)  # let camera get the focus after light is turned on
+            if config["CAMERA"] is True:
+                camera = Camera(self.logger)
+                camera.capture()
+                camera.exit()

@@ -6,8 +6,9 @@ from pydantic import BaseModel
 
 class MqttClient(Client):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, logger, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.custom_logger = logger
         self.handlers = dict()
         self.on_message = self.on_message_custom
 
@@ -16,9 +17,12 @@ class MqttClient(Client):
 
     def on_message_custom(self, client, userdata, msg):
         handler, payload_class = self.handlers[msg.topic]
-        handler(
-            self, msg.topic, payload_class.model_validate_json(msg.payload.decode())
-        )
+        try:
+            handler(
+                self, msg.topic, payload_class.model_validate_json(msg.payload.decode())
+            )
+        except Exception:
+            self.custom_logger.exception(f"Couldn't execute handler on {msg.topic}")
 
     def subscribe(
         self,

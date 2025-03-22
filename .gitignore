@@ -4,6 +4,9 @@ logs/
 # generated compose file
 docker-compose.yml
 
+# pictures
+/pictures
+
 # visual studio code
 .vscode/
 
