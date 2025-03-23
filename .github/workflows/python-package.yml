@@ -52,10 +52,12 @@ jobs:
           chmod -R +x venv
           source ./venv/bin/activate
           flake8 --exclude venv --count --max-line-length=120 --statistics
+        name: Run flake8
       - run: |
           chmod -R +x venv
           source ./venv/bin/activate
           black --exclude venv --check .
+        name: Run black
   tests:
     name: Run pytest UTs
     runs-on: ubuntu-latest
