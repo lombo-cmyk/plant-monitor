@@ -29,13 +29,13 @@ class Service(BaseService):
 
     def _subscribe(self, *args, **kwargs):
         self.client.subscribe(
-            topic="led/state", handler=self.handle_led_state, payload_class=LedState
+            topic="led/state", handler=self.handle_make_picture, payload_class=LedState
         )
 
     def _setup_scheduled_jobs(self, *args, **kwargs):
         schedule.every(30).minutes.do(self.job_read_battery)
 
-    def handle_led_state(self, client: MqttClient, topic: str, message: LedState):
+    def handle_make_picture(self, client: MqttClient, topic: str, message: LedState):
         if message.state is True:
             self.logger.info("Taking picture")
             sleep(5)  # let camera get the focus after light is turned on
