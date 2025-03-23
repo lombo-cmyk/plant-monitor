@@ -38,6 +38,10 @@ jobs:
           echo "stop stop stop"
           cat Makefile
           make dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: venv
+          path: venv
 
   linter:
     name: Format checkers
@@ -45,6 +49,10 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: venv
       - run: |
           source ./venv/bin/activate
           flake8 --exclude venv --count --max-line-length=120 --statistics
@@ -57,5 +65,9 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v4
+        with:
+          name: venv
+          path: venv
       - run: |
           make tests
