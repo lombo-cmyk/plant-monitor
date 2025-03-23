@@ -32,11 +32,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo "Running diag"
-          ls -la
-          pwd
-          echo "stop stop stop"
-          cat Makefile
           make dev
       - uses: actions/upload-artifact@v4
         with:
@@ -54,9 +49,11 @@ jobs:
           name: venv
           path: venv
       - run: |
+          chmod -R +x venv
           source ./venv/bin/activate
           flake8 --exclude venv --count --max-line-length=120 --statistics
       - run: |
+          chmod -R +x venv
           source ./venv/bin/activate
           black --exclude venv --check .
   tests:
@@ -70,4 +67,5 @@ jobs:
           name: venv
           path: venv
       - run: |
+          chmod -R +x venv
           make tests
