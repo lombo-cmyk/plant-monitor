@@ -20,7 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -32,6 +31,9 @@ jobs:
     needs: build
     steps:
       - run: |
+          ls
+          pwd
+          cat Makefile
           make dev
 
   linter:
