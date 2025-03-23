@@ -27,7 +27,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
   install-deps:
-    - name: Install dependencies
       run: |
         make dev
 
