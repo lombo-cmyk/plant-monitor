@@ -4,8 +4,10 @@
 name: Python package
 
 on:
-  push
-  pull_request
+  pull_request:
+    types: [opened, reopened]
+  push:
+
 
 jobs:
   build:
