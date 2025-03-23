@@ -33,6 +33,7 @@ jobs:
         flake8 --exclude venv --count --show-source --max-line-length=120 --statistics
     - name: Format check with black
       run: |
+        source ./venv/bin/activate
         black --exclude venv -l 120 --check .
     - name: Run pytest UTs
       run: |
