@@ -20,3 +20,9 @@ restart: stop start
 
 logs-%:
 	docker logs $* -f
+
+dev:
+	./build_helpers/make-dev.sh
+
+tests:
+	./build_helpers/make-tests.sh
