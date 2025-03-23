@@ -27,8 +27,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
   install-deps:
-      run: |
-        make dev
+    name: Install dependencies
+    run: |
+      make dev
 
   linter:
     - name: Lint with flake8
@@ -40,6 +41,6 @@ jobs:
         source ./venv/bin/activate
         black --exclude venv --check .
   tests:
-    - name: Run pytest UTs
-      run: |
-        make tests
+    name: Run pytest UTs
+    run: |
+      make tests
