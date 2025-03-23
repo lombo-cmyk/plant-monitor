@@ -28,12 +28,14 @@ jobs:
 
   install-deps:
     name: Install dependencies
+    runs-on: ubuntu-latest
     steps:
       - run: |
           make dev
 
   linter:
     name: Format checkers
+    runs-on: ubuntu-latest
     steps:
     - run: |
         source ./venv/bin/activate
@@ -43,6 +45,7 @@ jobs:
         black --exclude venv --check .
   tests:
     name: Run pytest UTs
+    runs-on: ubuntu-latest
     steps:
     - run: |
         make tests
