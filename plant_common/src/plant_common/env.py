@@ -6,13 +6,13 @@ from plant_common.singleton import singleton
 @singleton
 class _ParseConfig:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._config = dotenv_values("/usr/src/app/config/.env")
         self.config = {}
         self.parse_config()
         self.complete_config()
 
-    def parse_config(self):
+    def parse_config(self) -> None:
         for k, v in self._config.items():
             if v.lower() == "true":
                 self.config[k] = True
@@ -28,7 +28,7 @@ class _ParseConfig:
                 pass
             self.config[k] = v
 
-    def complete_config(self):
+    def complete_config(self) -> None:
         if not self.config.get("BATTERY_READ_INTERVAL_M"):
             self.config["BATTERY_READ_INTERVAL_M"] = 30
         if not self.config.get("FONT_SIZE_RATIO"):

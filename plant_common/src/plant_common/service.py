@@ -9,7 +9,9 @@ from plant_common.mqtt import MqttClient
 
 class BaseService:
 
-    def __init__(self, name: str, logger: Logger, client: MqttClient | None = None):
+    def __init__(
+        self, name: str, logger: Logger, client: MqttClient | None = None
+    ) -> None:
         self.name = name
         self.logger = logger
         self.client = (
@@ -22,26 +24,26 @@ class BaseService:
         signal.signal(signal.SIGINT, self._shutdown)
         signal.signal(signal.SIGTERM, self._shutdown)
 
-    def _subscribe(self, *args, **kwargs):
+    def _subscribe(self, *args, **kwargs) -> None:
         raise NotImplementedError
 
-    def _setup_scheduled_jobs(self, *args, **kwargs):
+    def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
         raise NotImplementedError
 
-    def _pre_run(self, *args, **kwargs):
+    def _pre_run(self, *args, **kwargs) -> None:
         """
         Overwrite with any service-specific pre_run code if needed
         """
         pass
 
-    def _shutdown(self, signum, frame):
+    def _shutdown(self, signum, frame) -> None:
         self.logger.debug("Shutting down.")
         schedule.clear()
         self.client.disconnect()
         self.shutdown = True
         self.logger.info("Shutdown complete.")
 
-    def _setup_mqtt(self):
+    def _setup_mqtt(self) -> None:
         self.logger.info("Setting up connections")
         self.client.connect(host="mosquitto-broker", port=9001)
 
@@ -49,7 +51,7 @@ class BaseService:
 
         self.client.loop_start()
 
-    def run(self):
+    def run(self) -> None:
         """
         Main service loop. Runs forever.
         """

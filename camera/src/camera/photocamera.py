@@ -1,7 +1,9 @@
 import gphoto2 as gp
+from logging import Logger
 from datetime import datetime
 from threading import Lock
 from PIL import Image, ImageDraw
+from typing import Callable
 
 from plant_common.env import config
 
@@ -12,11 +14,11 @@ class Camera:
     In order to keep backup files camera settings are set to save the image to SD card as well.
     """
 
-    def __init__(self, logger):
+    def __init__(self, logger: Logger) -> None:
         self.logger = logger
         self.mutex = Lock()
 
-    def _use_device(fun):
+    def _use_device(fun: Callable) -> Callable:
         def wrapper(self, *args, **kwargs):
             with self.mutex:
                 camera = gp.Camera()
@@ -27,7 +29,7 @@ class Camera:
         return wrapper
 
     @_use_device
-    def set_capture_target(self, _camera):
+    def set_capture_target(self, _camera: gp.Camera) -> None:
         """
         First function argument is used by decorator to create gphoto2 Camera.
         Set camera's internal capture path.
@@ -41,7 +43,7 @@ class Camera:
         _camera.set_single_config("capturetarget", config_widget)
 
     @_use_device
-    def get_battery_level(self, _camera) -> str:
+    def get_battery_level(self, _camera: gp.Camera) -> str:
         """
         First function argument is used by decorator to create gphoto2 Camera.
         Get battery level.
@@ -54,7 +56,7 @@ class Camera:
         return battery_level
 
     @_use_device
-    def capture(self, _camera):
+    def capture(self, _camera: gp.Camera) -> None:
         """
         First function argument is used by decorator to create gphoto2 Camera.
         Smile.
@@ -66,7 +68,7 @@ class Camera:
         )
         self._save(_camera, file_path)
 
-    def _save(self, _camera, camera_file_path):
+    def _save(self, _camera: gp.Camera, camera_file_path: str) -> None:
         """
         Download picture from camera and save to disk.
         """
@@ -83,7 +85,7 @@ class Camera:
         Camera._add_timestamp_and_save(storage_path, photo_ts)
 
     @staticmethod
-    def _add_timestamp_and_save(storage_path: str, photo_ts: str):
+    def _add_timestamp_and_save(storage_path: str, photo_ts: str) -> None:
         """
         Add timestamp in the bottom right corener of the picture.
         Sizes are relative to picture height.
