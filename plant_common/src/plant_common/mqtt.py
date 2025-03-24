@@ -1,6 +1,5 @@
-from typing import Any, Callable
-
 from logging import Logger
+from typing import Any, Callable
 
 from paho.mqtt.client import Client
 from pydantic import BaseModel

@@ -1,7 +1,6 @@
-from diagnostics.service import Service
-
 from plant_common.logger import get_logger
 
+from diagnostics.service import Service
 
 logger = get_logger("diagnostics")
 

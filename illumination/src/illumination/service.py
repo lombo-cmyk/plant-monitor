@@ -1,13 +1,13 @@
-from time import sleep
-from threading import Thread
-
 from logging import Logger
+from threading import Thread
+from time import sleep
+
 import schedule
 from gpiozero import LED
 
 from plant_common.model import LedState
-from plant_common.service import BaseService
 from plant_common.mqtt import MqttClient
+from plant_common.service import BaseService
 
 LED_ON_TIME_S = 15
 

@@ -1,9 +1,10 @@
-import gphoto2 as gp
-from logging import Logger
 from datetime import datetime
+from logging import Logger
 from threading import Lock
-from PIL import Image, ImageDraw
 from typing import Callable
+
+import gphoto2 as gp
+from PIL import Image, ImageDraw
 
 from plant_common.env import config
 

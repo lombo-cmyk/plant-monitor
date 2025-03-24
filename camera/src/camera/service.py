@@ -1,6 +1,6 @@
+from logging import Logger
 from time import sleep
 
-from logging import Logger
 import schedule
 
 from plant_common.env import config
@@ -8,8 +8,8 @@ from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
 from plant_common.service import BaseService
 
-from camera.photocamera import Camera
 from camera.mock_photocamera import DummyCamera
+from camera.photocamera import Camera
 
 
 class Service(BaseService):

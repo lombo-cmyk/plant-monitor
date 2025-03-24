@@ -1,7 +1,6 @@
-from illumination.service import Service
-
 from plant_common.logger import get_logger
 
+from illumination.service import Service
 
 logger = get_logger("illumination")
 

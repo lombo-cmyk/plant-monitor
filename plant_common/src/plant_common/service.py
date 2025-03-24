@@ -1,8 +1,8 @@
+import signal
 from logging import Logger
 from time import sleep
 
 import schedule
-import signal
 
 from plant_common.mqtt import MqttClient
 

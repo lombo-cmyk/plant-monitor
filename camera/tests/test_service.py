@@ -2,8 +2,8 @@ from unittest.mock import MagicMock, patch
 
 from plant_common.model import LedState
 
-from camera.service import Service
 from camera.mock_photocamera import DummyCamera
+from camera.service import Service
 
 
 @patch.dict("camera.service.config", {"CAMERA": True})

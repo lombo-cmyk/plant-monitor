@@ -19,4 +19,4 @@ repos:
     hooks:
       - id: isort
         name: isort (python)
-        args: [--show-config]
+        args: [.]
