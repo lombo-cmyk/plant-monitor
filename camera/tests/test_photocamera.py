@@ -17,7 +17,7 @@ def test_save():
 
     camera._save(_camera, camera_file_path)
 
-    get_mock.save.assert_called_once_with("/var/pictures/2022_10_14_03a_21_37.jpg")
+    get_mock.save.assert_called_once_with("/var/pictures/2022_10_14_03_21_37.jpg")
 
 
 def test_save_error():
