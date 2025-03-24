@@ -1,5 +1,4 @@
 from time import sleep
-from threading import Lock
 
 import schedule
 
@@ -9,23 +8,24 @@ from plant_common.mqtt import MqttClient
 from plant_common.service import BaseService
 
 from camera.photocamera import Camera
+from camera.mock_photocamera import DummyCamera
 
 
 class Service(BaseService):
 
     def __init__(self, name, logger, client=None):
         super().__init__(name, logger, client)
-        self.mutex = Lock()
+        self.camera = (
+            Camera(self.logger)
+            if config["CAMERA"] is True
+            else DummyCamera(self.logger)
+        )
         self.latest_battery_level = None  # TODO: will be used for e-mailing,
         # needs a timestamp {"ts": ..., "level": ...}
 
     def _pre_run(self, *args, **kwargs):
-        with self.mutex:
-            if config["CAMERA"] is True:
-                camera = Camera(self.logger)
-                camera.set_capture_target()
-                camera.get_battery_level()
-                camera.exit()
+        self.camera.set_capture_target()
+        self.camera.get_battery_level()
 
     def _subscribe(self, *args, **kwargs):
         self.client.subscribe(
@@ -33,25 +33,18 @@ class Service(BaseService):
         )
 
     def _setup_scheduled_jobs(self, *args, **kwargs):
-        schedule.every(30).minutes.do(self.job_read_battery)
+        schedule.every(config["BATTERY_READ_INTERVAL_M"]).minutes.do(
+            self.job_read_battery
+        )
 
     def handle_make_picture(self, client: MqttClient, topic: str, message: LedState):
         if message.state is True:
             self.logger.info("Taking picture")
             sleep(5)  # let camera get the focus after light is turned on
-            with self.mutex:
-                if config["CAMERA"] is True:
-                    camera = Camera(self.logger)
-                    camera.capture()
-                    camera.exit()
+            self.camera.capture()
 
     def job_read_battery(self):
-        level = None
-        with self.mutex:
-            if config["CAMERA"] is True:
-                camera = Camera(self.logger)
-                level = camera.get_battery_level()
-                camera.exit()
+        level = self.camera.get_battery_level()
 
         if level:
             self.latest_battery_level = level
