@@ -1,6 +1,9 @@
 import gphoto2 as gp
 from datetime import datetime
 from threading import Lock
+from PIL import Image, ImageDraw
+
+from plant_common.env import config
 
 
 class Camera:
@@ -67,10 +70,49 @@ class Camera:
         """
         Download picture from camera and save to disk.
         """
-        _name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-        storage_path = f"/var/pictures/{_name}.jpg"
+        now = datetime.now()
+        filename = now.strftime("%Y_%m_%d_%H_%M_%S")
+        photo_ts = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        storage_path = f"/var/pictures/{filename}.jpg"
         self.logger.info(f"Saving new image to {storage_path}")
         camera_file = _camera.file_get(
             camera_file_path.folder, camera_file_path.name, gp.GP_FILE_TYPE_NORMAL
         )
         camera_file.save(storage_path)
+        Camera._add_timestamp_and_save(storage_path, photo_ts)
+
+    @staticmethod
+    def _add_timestamp_and_save(storage_path: str, photo_ts: str):
+        """
+        Add timestamp in the bottom right corener of the picture.
+        Sizes are relative to picture height.
+        """
+        img = Image.open(storage_path)
+        width, height = img.size
+
+        ratio = config["FONT_SIZE_RATIO"] / 100
+        font_size = int(ratio * height)
+        stroke_width = int(0.003 * height)
+
+        draw = ImageDraw.Draw(img)
+
+        left, top, right, bottom = draw.textbbox(
+            (0, 0), photo_ts, font_size=font_size, stroke_width=stroke_width
+        )
+        text_w = right - left
+        text_h = bottom - top
+
+        x = int(width - text_w - 0.02 * width)
+        y = int(height - text_h - 0.02 * height)
+
+        draw.text(
+            (x, y),
+            photo_ts,
+            fill=(255, 255, 255),
+            stroke_width=stroke_width,
+            stroke_fill=(0, 0, 0),
+            font_size=font_size,
+        )
+
+        img.save(storage_path)

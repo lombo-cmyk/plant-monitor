@@ -31,6 +31,8 @@ class _ParseConfig:
     def complete_config(self):
         if not self.config.get("BATTERY_READ_INTERVAL_M"):
             self.config["BATTERY_READ_INTERVAL_M"] = 30
+        if not self.config.get("FONT_SIZE_RATIO"):
+            self.config["FONT_SIZE_RATIO"] = 5
 
 
 config = _ParseConfig().config
