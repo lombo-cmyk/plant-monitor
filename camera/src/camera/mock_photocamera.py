@@ -11,7 +11,7 @@ class DummyCamera:
         self.logger = logger
         self.logger.warning("MOCK camera device selected")
 
-    def set_capture_target(self):
+    def set_capture_target(self) -> None:
         pass
 
     def get_battery_level(self) -> str:
@@ -20,13 +20,13 @@ class DummyCamera:
         """
         return str(randint(1, 100)) + "%"
 
-    def capture(self):
+    def capture(self) -> None:
         """
         Smile.
         """
         self._save()
 
-    def _save(self):
+    def _save(self) -> None:
         """
         TODO: Create and save dummy file to disk
         """

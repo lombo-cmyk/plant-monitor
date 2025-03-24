@@ -1,35 +1,38 @@
-import schedule
 import math
+from logging import Logger
 
-from plant_common.model import LedState
-from plant_common.service import BaseService
-
+import schedule
 from gpiozero import MCP3008
 
-from diagnostics.mock_devices import MockMCP3008
 from plant_common.env import config
+from plant_common.model import LedState
 from plant_common.mqtt import MqttClient
+from plant_common.service import BaseService
+
+from diagnostics.mock_devices import MockMCP3008
 
 
 class Service(BaseService):
 
-    def __init__(self, name, logger, client=None):
+    def __init__(self, name: str, logger: Logger, client: MqttClient | None = None):
         super().__init__(name, logger, client)
         self.thermistor = self.get_thermistor()
         self.photoresistor = self.get_photoresistor()
 
-    def _subscribe(self, *args, **kwargs):
+    def _subscribe(self, *args, **kwargs) -> None:
         self.client.subscribe(
             topic="led/state", handler=self.handle_led_state, payload_class=LedState
         )
 
-    def _setup_scheduled_jobs(self, *args, **kwargs):
+    def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
         schedule.every(10).seconds.do(self.diagnostics_job)
 
-    def handle_led_state(self, client: MqttClient, topic: str, message: LedState):
+    def handle_led_state(
+        self, client: MqttClient, topic: str, message: LedState
+    ) -> None:
         self.logger.info(f"Handle led state: {topic}, {message}")
 
-    def diagnostics_job(self):
+    def diagnostics_job(self) -> None:
         temperature = self.read_thermistor()  # noqa: F841
         brightness = self.read_photoresistor()  # noqa: F841
 
@@ -77,7 +80,7 @@ class Service(BaseService):
             )
         return temperature
 
-    def read_photoresistor(self):
+    def read_photoresistor(self) -> int:
         """
         Read photoresistor digital value from 10 bit ADC.
         5-10k photoresistor in series with 10k resistor.

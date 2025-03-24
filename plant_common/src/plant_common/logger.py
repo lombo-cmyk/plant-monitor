@@ -3,7 +3,7 @@ import logging.handlers
 from sys import stdout
 
 
-def get_logger(name: str):
+def get_logger(name: str) -> logging.Logger:
 
     logger = logging.getLogger(name)
 

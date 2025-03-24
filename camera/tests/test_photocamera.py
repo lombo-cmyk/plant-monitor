@@ -1,4 +1,5 @@
 from unittest.mock import MagicMock, patch
+
 from freezegun import freeze_time
 
 from camera.photocamera import Camera
@@ -6,7 +7,7 @@ from camera.photocamera import Camera
 
 @freeze_time("2022-10-14 03:21:37")
 @patch("camera.photocamera.Camera._add_timestamp_and_save")
-def test_save(mock_add_timestamp_and_save):
+def test_save(mock_add_timestamp_and_save: MagicMock):
     camera = Camera(MagicMock())
 
     _camera = MagicMock()
@@ -29,7 +30,7 @@ def test_save_error():
 
 
 @patch("camera.photocamera.gp")
-def test_decorator(mock_gp):
+def test_decorator(mock_gp: MagicMock):
     camera = Camera(MagicMock())
 
     camera.get_battery_level()
@@ -44,7 +45,7 @@ def test_capture_error():
 @patch.dict("camera.photocamera.config", {"FONT_SIZE_RATIO": 100})
 @patch("camera.photocamera.Image")
 @patch("camera.photocamera.ImageDraw")
-def test_add_timestamp_and_save(mock_image_draw, mock_image):
+def test_add_timestamp_and_save(mock_image_draw: MagicMock, mock_image: MagicMock):
     img = MagicMock()
     img.size = 100, 200
     mock_image.open = MagicMock(return_value=img)

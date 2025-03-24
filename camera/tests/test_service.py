@@ -2,14 +2,14 @@ from unittest.mock import MagicMock, patch
 
 from plant_common.model import LedState
 
-from camera.service import Service
 from camera.mock_photocamera import DummyCamera
+from camera.service import Service
 
 
 @patch.dict("camera.service.config", {"CAMERA": True})
 @patch("camera.service.sleep")
 @patch("camera.service.Camera")
-def test_handle_make_picture(mock_camera, mock_sleep):
+def test_handle_make_picture(mock_camera: MagicMock, mock_sleep: MagicMock):
     client = MagicMock()
     service = Service(name="test", logger=MagicMock(), client=client)
 
@@ -23,7 +23,7 @@ def test_handle_make_picture(mock_camera, mock_sleep):
 
 @patch.dict("camera.service.config", {"CAMERA": False})
 @patch("camera.service.sleep")
-def test_dummy_camera(mock_sleep):
+def test_dummy_camera(mock_sleep: MagicMock):
     client = MagicMock()
     service = Service(name="test", logger=MagicMock(), client=client)
 
