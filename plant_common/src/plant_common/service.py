@@ -55,8 +55,10 @@ class BaseService:
         """
         self.logger.info(f"Starting service {self.name}")
 
-        self._pre_run()
         self._setup_mqtt()
+
+        self._pre_run()
+
         self._setup_scheduled_jobs()
 
         while True:

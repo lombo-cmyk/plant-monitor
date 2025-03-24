@@ -10,6 +10,7 @@ class _ParseConfig:
         self._config = dotenv_values("/usr/src/app/config/.env")
         self.config = {}
         self.parse_config()
+        self.complete_config()
 
     def parse_config(self):
         for k, v in self._config.items():
@@ -26,6 +27,10 @@ class _ParseConfig:
             except ValueError:
                 pass
             self.config[k] = v
+
+    def complete_config(self):
+        if not self.config.get("BATTERY_READ_INTERVAL_M"):
+            self.config["BATTERY_READ_INTERVAL_M"] = 30
 
 
 config = _ParseConfig().config
