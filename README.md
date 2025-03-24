@@ -14,3 +14,9 @@
 1. `make build-base` before building images - needed just once
 1. `make build` to build all
 1. `make start` to start all
+
+
+## Memory limit
+Memory limit support on RPI is disabled by default. In order to enable it edit `/boot/firmware/cmdline.txt`
+adding the following to the end of the file: `cgroup_enable=memory swapaccount=1 cgroup_memory=1 cgroup_enable=cpuset`
+and reboot

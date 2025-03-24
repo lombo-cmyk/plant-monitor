@@ -2,6 +2,7 @@ services:
   mosquitto-broker:
     image: eclipse-mosquitto
     container_name: mosquitto-broker
+    mem_limit: 128M
     ports:
       - "1883:1883" # default
       - "9001:9001" # websockets
@@ -11,6 +12,7 @@ services:
     restart: always
   illumination:
     container_name: illumination
+    mem_limit: 128M
     depends_on:
       - mosquitto-broker
     build:
@@ -30,6 +32,7 @@ services:
     restart: always
   diagnostics:
     container_name: diagnostics
+    mem_limit: 128M
     depends_on:
       - mosquitto-broker
     build:
@@ -52,6 +55,7 @@ services:
     restart: always
   camera:
     container_name: camera
+    mem_limit: 256M
     depends_on:
       - mosquitto-broker
     privileged: true
