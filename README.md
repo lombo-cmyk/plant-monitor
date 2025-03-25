@@ -12,24 +12,23 @@
 
 ## Prerequisites
 
+### Docker
+https://docs.docker.com/engine/install/debian/
+https://docs.docker.com/engine/install/linux-postinstall/
+
 ### Memory limit
 Memory limit support on RPI is disabled by default. In order to enable it edit `/boot/firmware/cmdline.txt`
 adding the following to the end of the file: `cgroup_enable=memory swapaccount=1 cgroup_memory=1 cgroup_enable=cpuset`
 and reboot
 
-### gphoto2 on host
-Presence of gphoto2 package on host is not required, although it's useful while debugging. If gphoto2 is installed it can
-silently claim the camera in the background making the camera unusable the others. To prevent that the following can be done:
-1. Create a bash script with content:
-```
-#!/bin/bash
+### gvfs-gphoto2-volume-monitor
+Even the [author doesn't seem to know why this is started](https://github.com/gphoto/gphoto2/issues/181). It could probably be disabled in some event-driven way,
+but this way takes much less dev time and is robust enough
 
-pkill -f "/usr/libexec/gvfs-gphoto2-volume-monitor"
-pkill -f "/usr/libexec/gvfsd-gphoto2"
-```
+1. Move `./host_files/gphoto2-volume-monitor-killer.sh` to intended location or use it directly:
 1. run `chmod +x /path/to/bash_script.sh`
 1. run `crontab -e`
-1. Add the following to crontab: `@reboot /path/to/bash_script.sh`
+1. Add the following to crontab: `@reboot sleep 20 && /path/to/bash_script.sh`
 1. `sudo reboot now`
 
 ## How to
@@ -37,9 +36,3 @@ pkill -f "/usr/libexec/gvfsd-gphoto2"
 1. `make build-base` before building images - needed just once
 1. `make build` to build all
 1. `make start` to start all
-
-
-## Memory limit
-Memory limit support on RPI is disabled by default. In order to enable it edit `/boot/firmware/cmdline.txt`
-adding the following to the end of the file: `cgroup_enable=memory swapaccount=1 cgroup_memory=1 cgroup_enable=cpuset`
-and reboot
