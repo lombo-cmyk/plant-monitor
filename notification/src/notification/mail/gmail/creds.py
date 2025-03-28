@@ -36,6 +36,7 @@ class CredentialsManager:
                 "/usr/src/app/token.json", self.SCOPES
             )
         else:
+            # Can't do much more here. sending notifications is impossible.
             self.logger.error(
                 "Google TOKEN does not exists. Can't connect to google services."
             )
