@@ -91,6 +91,7 @@ services:
     volumes:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
+      - ./token.json:/usr/src/app/token.json
     restart: always
 
 networks:
