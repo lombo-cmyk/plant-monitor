@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from plant_common.model import LedState
+from plant_common.mqtt.model import LedState
 
 from camera.mock_photocamera import DummyCamera
 from camera.service import Service

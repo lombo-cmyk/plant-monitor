@@ -1,10 +1,11 @@
 from logging import Logger
 
 from plant_common.env import config
+from plant_common.message.model import Message
+from plant_common.message.severity import Severity
 
-from notification.mail.abstract_mailbox import AbstractMailbox, Message
+from notification.mail.abstract_mailbox import AbstractMailbox
 from notification.mail.gmail.mailbox import GmailMailbox
-from notification.mail.severity import MessageSeverity
 
 SENDER = config["SENDER"]
 MAILBOX = config["MAILBOX"]
@@ -19,7 +20,7 @@ class MessageManager:
         to: list[str],
         topic: str,
         content: str,
-        severity: MessageSeverity,
+        severity: Severity,
         logger: Logger,
     ):
         self.message = Message.build(

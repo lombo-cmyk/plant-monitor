@@ -1,32 +1,6 @@
 from logging import Logger
 
-from pydantic import BaseModel
-
-from notification.mail.severity import MessageSeverity
-
-
-class Message(BaseModel):
-    receivers: list[str]
-    sender: str
-    topic: str
-    content: str
-
-    @staticmethod
-    def build(
-        receivers: list[str],
-        sender: str,
-        topic: str,
-        content: str,
-        severity: MessageSeverity,
-    ) -> "Message":
-        topic = severity.value + ": " + topic
-        return Message(
-            receivers=receivers,
-            sender=sender,
-            topic=topic,
-            content=content,
-            severity=severity,
-        )
+from plant_common.message.model import Message
 
 
 class AbstractMailbox:

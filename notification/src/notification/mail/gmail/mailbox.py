@@ -5,7 +5,9 @@ from logging import Logger
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
-from notification.mail.abstract_mailbox import AbstractMailbox, Message
+from plant_common.message.model import Message
+
+from notification.mail.abstract_mailbox import AbstractMailbox
 from notification.mail.gmail.creds import CredentialsManager
 
 
