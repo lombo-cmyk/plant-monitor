@@ -1,6 +1,6 @@
 from logging import Logger
 
-from plant_common.message.model import Message
+from notification.mail.model import Message
 
 
 class AbstractMailbox:

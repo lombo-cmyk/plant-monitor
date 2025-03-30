@@ -1,11 +1,11 @@
 from logging import Logger
 
 from plant_common.env import config
-from plant_common.message.model import Message
 from plant_common.message.severity import Severity
 
 from notification.mail.abstract_mailbox import AbstractMailbox
 from notification.mail.gmail.mailbox import GmailMailbox
+from notification.mail.model import Message
 
 SENDER = config["SENDER"]
 MAILBOX = config["MAILBOX"]

@@ -17,11 +17,10 @@ class Message(BaseModel):
         content: str,
         severity: Severity,
     ) -> "Message":
-        topic = severity.value + ": " + topic
+        topic = severity.value + topic
         return Message(
             receivers=receivers,
             sender=sender,
             topic=topic,
             content=content,
-            severity=severity,
         )
