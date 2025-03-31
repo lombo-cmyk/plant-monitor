@@ -9,8 +9,15 @@ class AbstractMailbox:
         self.message_content = message
 
     def send(self):
-        self._prepare()
-        self._send()
+        try:
+            self._prepare()
+            self._send()
+        except NotImplementedError:
+            raise
+        except Exception:
+            self.logger.exception(
+                f"Failed to send message: {self.message_content.topic}"
+            )
 
     def _prepare(self):
         raise NotImplementedError

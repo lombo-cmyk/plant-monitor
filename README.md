@@ -9,8 +9,25 @@
 | `CAMERA`                  |   True    | `bool` | USB camera is present(true) or should be mocked                       |
 | `BATTERY_READ_INTERVAL_M` |   False   | `int`  | default `30`, Interval between reading battery status (in minutes)    |
 | `FONT_SIZE_RATIO`         |   False   | `int`  | default `5`, timestamp font size, relative to picture height          |
+| `MAILBOX`                 |   True    | `str`  | mailbox name to use - supported: `GMAIL`, `AWS` - more below          |
+
+
+### Notification variables
+
+#### Gmail notifications
+| Variable                  | Mandatory |  type  |                            Description                                |
+|---------------------------|-----------|--------|-----------------------------------------------------------------------|
 | `SENDER`                  |   True    | `str`  | Sender's e-mail address                                               |
-| `MAILBOX`                 |   True    | `str`  | mailbox name to use - supported: `GMAIL`                              |
+| `RECEIVERS`               |   True    | `str`  | Comma separated list of receivers
+
+#### AWS SNS e-mail notifications
+| Variable                  | Mandatory |  type  |                            Description                                |
+|---------------------------|-----------|--------|-----------------------------------------------------------------------|
+| `AWS_ACC_ID`              |   True    | `str`  | AWS account ID                                                        |
+| `REGION`                  |   True    | `str`  | AWS region name                                                       |
+| `AWS_ACCESS_KEY`          |   True    | `str`  | User's generated access key                                           |
+| `AWS_SECRET_KEY`          |   True    | `str`  | User's generated secret key                                           |
+
 
 ## Prerequisites
 
