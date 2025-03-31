@@ -5,10 +5,24 @@ from plant_common.service import BaseService
 
 from notification.mail.manager import MessageManager
 
-RECEIVERS = config["RECEIVERS"]
-
 
 class Service(BaseService):
+
+    def _pre_run(self, *args, **kwargs):
+        is_gmail_error = config["MAILBOX"] == "GMAIL" and not all(
+            [config.get("SENDER"), config.get("RECEIVERS")]
+        )
+        is_sns_error = config["MAILBOX"] == "SNS" and not all(
+            [
+                config.get("AWS_ACCESS_KEY"),
+                config.get("AWS_SECRET_KEY"),
+                config.get("REGION"),
+                config.get("AWS_ACC_ID"),
+            ]
+        )
+        if is_gmail_error or is_sns_error:
+            self.logger.error("Wrong mailbox configuration. See Readme.")
+            exit(1)
 
     def _subscribe(self, *args, **kwargs) -> None:
         self.client.subscribe(
@@ -21,5 +35,7 @@ class Service(BaseService):
         pass
 
     def handle_email_send(self, client: MqttClient, topic: str, message: EmailContent):
-        msg = MessageManager(to=RECEIVERS, logger=self.logger, **message.model_dump())
+        msg = MessageManager(
+            to=config.get("RECEIVERS", ""), logger=self.logger, **message.model_dump()
+        )
         msg.send()

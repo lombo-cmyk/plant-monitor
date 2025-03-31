@@ -6,8 +6,9 @@ from plant_common.message.severity import Severity
 from notification.mail.abstract_mailbox import AbstractMailbox
 from notification.mail.gmail.mailbox import GmailMailbox
 from notification.mail.model import Message
+from notification.mail.sns.mailbox import SnsMailbox
 
-MAILBOX_CLS = {"GMAIL": GmailMailbox}
+MAILBOX_CLS = {"GMAIL": GmailMailbox, "AWS": SnsMailbox}
 
 
 class MessageManager:
@@ -20,9 +21,10 @@ class MessageManager:
         severity: Severity,
         logger: Logger,
     ):
+
         self.message = Message.build(
             receivers=to,
-            sender=config["SENDER"],
+            sender=config.get("SENDER", ""),
             topic=topic,
             content=content,
             severity=severity,
