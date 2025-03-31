@@ -5,8 +5,8 @@ import schedule
 from gpiozero import MCP3008
 
 from plant_common.env import config
-from plant_common.model import LedState
-from plant_common.mqtt import MqttClient
+from plant_common.mqtt.model import LedState
+from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
 
 from diagnostics.mock_devices import MockMCP3008

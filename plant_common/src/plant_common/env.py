@@ -20,6 +20,10 @@ class _ParseConfig:
             if v.lower() == "false":
                 self.config[k] = False
                 continue
+            if "," in v.lower() and "@" in v.lower():
+                # emails
+                self.config[k] = v.replace(" ", "").split(",")
+                continue
             try:
                 number = int(v)
                 self.config[k] = number

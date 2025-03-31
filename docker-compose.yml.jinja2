@@ -76,6 +76,23 @@ services:
       - /dev/bus/usb:/dev/bus/usb
       - ./pictures:/var/pictures
     restart: always
+  notification:
+    container_name: notification
+    mem_limit: 128M
+    depends_on:
+      - mosquitto-broker
+    build:
+      context: ./
+      dockerfile: ./notification/Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=debug
+      - TZ=Europe/Warsaw
+    volumes:
+      - ./logs:/var/logs
+      - .env:/usr/src/app/config/.env
+      - ./token.json:/usr/src/app/token.json
+    restart: always
 
 networks:
   default:

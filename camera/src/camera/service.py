@@ -4,8 +4,8 @@ from time import sleep
 import schedule
 
 from plant_common.env import config
-from plant_common.model import LedState
-from plant_common.mqtt import MqttClient
+from plant_common.mqtt.model import LedState
+from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
 
 from camera.mock_photocamera import DummyCamera

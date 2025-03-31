@@ -5,8 +5,8 @@ from time import sleep
 import schedule
 from gpiozero import LED
 
-from plant_common.model import LedState
-from plant_common.mqtt import MqttClient
+from plant_common.mqtt.model import LedState
+from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
 
 LED_ON_TIME_S = 15

@@ -4,7 +4,7 @@ from time import sleep
 
 import schedule
 
-from plant_common.mqtt import MqttClient
+from plant_common.mqtt.mqtt import MqttClient
 
 
 class BaseService:

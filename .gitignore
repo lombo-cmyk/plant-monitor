@@ -1,3 +1,7 @@
+# secret files
+token.json
+credentials.json
+
 # platform logs
 logs/
 

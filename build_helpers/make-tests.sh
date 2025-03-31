@@ -3,7 +3,7 @@
 source venv/bin/activate
 
 results=()
-for w in plant_common camera diagnostics illumination
+for w in plant_common camera diagnostics illumination notification
 do
   echo "Running $w tests"
   pytest "./$w/"
