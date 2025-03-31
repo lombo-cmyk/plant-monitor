@@ -7,9 +7,6 @@ from notification.mail.abstract_mailbox import AbstractMailbox
 from notification.mail.gmail.mailbox import GmailMailbox
 from notification.mail.model import Message
 
-SENDER = config["SENDER"]
-MAILBOX = config["MAILBOX"]
-
 MAILBOX_CLS = {"GMAIL": GmailMailbox}
 
 
@@ -24,11 +21,15 @@ class MessageManager:
         logger: Logger,
     ):
         self.message = Message.build(
-            receivers=to, sender=SENDER, topic=topic, content=content, severity=severity
+            receivers=to,
+            sender=config["SENDER"],
+            topic=topic,
+            content=content,
+            severity=severity,
         )
         self.logger = logger
 
     def send(self):
-        MailboxCls: AbstractMailbox = MAILBOX_CLS[MAILBOX]
+        MailboxCls: AbstractMailbox = MAILBOX_CLS[config["MAILBOX"]]
         mailbox = MailboxCls(self.message, self.logger)
         mailbox.send()
