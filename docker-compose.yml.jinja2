@@ -92,6 +92,7 @@ services:
       - ./logs:/var/logs
       - .env:/usr/src/app/config/.env
       - ./token.json:/usr/src/app/token.json
+      - ./notification/template/:/usr/src/app/template/
     restart: always
 
 networks:

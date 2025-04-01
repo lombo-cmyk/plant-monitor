@@ -9,7 +9,7 @@
 | `CAMERA`                  |   True    | `bool` | USB camera is present(true) or should be mocked                       |
 | `BATTERY_READ_INTERVAL_M` |   False   | `int`  | default `30`, Interval between reading battery status (in minutes)    |
 | `FONT_SIZE_RATIO`         |   False   | `int`  | default `5`, timestamp font size, relative to picture height          |
-| `MAILBOX`                 |   True    | `str`  | mailbox name to use - supported: `GMAIL`, `AWS` - more below          |
+| `MAILBOX`                 |   True    | `str`  | mailbox name to use - supported: `GMAIL`, `AWS`, `MOCK`- more below   |
 
 
 ### Notification variables
@@ -34,6 +34,8 @@ Two ways of sending e-mails are supported. Select one with `MAILBOX` variable.
 | `REGION`                  |   True    | `str`  | AWS region name                                                       |
 | `AWS_ACCESS_KEY`          |   True    | `str`  | User's generated access key                                           |
 | `AWS_SECRET_KEY`          |   True    | `str`  | User's generated secret key                                           |
+#### MOCK notifications
+Dumps mail content into logs.
 
 
 ## Prerequisites
