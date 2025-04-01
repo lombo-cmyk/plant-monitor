@@ -57,7 +57,7 @@ class Camera:
         return battery_level
 
     @_use_device
-    def capture(self, _camera: gp.Camera) -> None:
+    def capture(self, _camera: gp.Camera) -> str:
         """
         First function argument is used by decorator to create gphoto2 Camera.
         Smile.
@@ -67,9 +67,9 @@ class Camera:
         self.logger.info(
             f"Image captured to {file_path.folder}/{file_path.name} on the camera."
         )
-        self._save(_camera, file_path)
+        return self._save(_camera, file_path)
 
-    def _save(self, _camera: gp.Camera, camera_file_path: str) -> None:
+    def _save(self, _camera: gp.Camera, camera_file_path: str) -> str:
         """
         Download picture from camera and save to disk.
         """
@@ -84,6 +84,7 @@ class Camera:
         )
         camera_file.save(storage_path)
         Camera._add_timestamp_and_save(storage_path, photo_ts)
+        return filename + ".jpg"
 
     @staticmethod
     def _add_timestamp_and_save(storage_path: str, photo_ts: str) -> None:

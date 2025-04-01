@@ -58,11 +58,13 @@ class Service(BaseService):
         )
         template = environment.get_template("summary.jinja2")
 
-        intense_light = "".join(self.gethered_notifications.high_light)
-        high_temp = "".join(self.gethered_notifications.high_temperature)
+        intense_light = "".join(map(str, self.gethered_notifications.high_light))
+        high_temp = "".join(map(str, self.gethered_notifications.high_temperature))
+        pictures = ", ".join(self.gethered_notifications.pictures)
 
-        # TODO: render picture names
-        content = template.render(intense_light=intense_light, high_temp=high_temp)
+        content = template.render(
+            intense_light=intense_light, high_temp=high_temp, pictures=pictures
+        )
         topic = "Daily Raspberry summary"
         msg = MessageManager(
             to=config.get("RECEIVERS", ""),
