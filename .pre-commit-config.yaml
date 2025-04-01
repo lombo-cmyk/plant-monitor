@@ -19,4 +19,4 @@ repos:
     hooks:
       - id: isort
         name: isort (python)
-        args: [.]
+        args: ["--profile", "black", "--filter-files"]
