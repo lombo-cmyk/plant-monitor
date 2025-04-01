@@ -4,7 +4,7 @@ from time import sleep
 import schedule
 
 from plant_common.env import config
-from plant_common.mqtt.model import LedState
+from plant_common.mqtt.model import LedState, NotificationCollector
 from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
 
@@ -44,7 +44,9 @@ class Service(BaseService):
         if message.state is True:
             self.logger.info("Taking picture")
             sleep(5)  # let camera get the focus after light is turned on
-            self.camera.capture()
+            filename = self.camera.capture()
+            notification = NotificationCollector(picture_path=filename)
+            self.client.publish("notification/gather", notification)
 
     def job_read_battery(self) -> None:
         level = self.camera.get_battery_level()

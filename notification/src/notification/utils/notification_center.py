@@ -6,6 +6,7 @@ from plant_common.mqtt.model import EventDetails, NotificationCollector
 class NotificationCenter(BaseModel):
     high_temperature: list[EventDetails] = []
     high_light: list[EventDetails] = []
+    pictures: list[str] = []
 
     def update(self, data: NotificationCollector):
         if data.high_temperature:
@@ -17,3 +18,5 @@ class NotificationCenter(BaseModel):
             self.high_light.append(data.high_light)
             if len(self.high_light) > 10:
                 self.high_light.pop()
+        if data.picture_path:
+            self.pictures.append(data.picture_path)

@@ -12,6 +12,7 @@ from camera.service import Service
 def test_handle_make_picture(mock_camera: MagicMock, mock_sleep: MagicMock):
     client = MagicMock()
     service = Service(name="test", logger=MagicMock(), client=client)
+    service.camera.capture = MagicMock(return_value="picture_name")
 
     led_state = LedState.build(state=True)
 
@@ -19,6 +20,7 @@ def test_handle_make_picture(mock_camera: MagicMock, mock_sleep: MagicMock):
 
     mock_sleep.assert_called_once()
     service.camera.capture.assert_called_once()
+    service.client.publish.assert_called_once()
 
 
 @patch.dict("camera.service.config", {"CAMERA": False})

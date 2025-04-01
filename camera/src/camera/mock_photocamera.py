@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import randint
 
 
@@ -20,13 +21,16 @@ class DummyCamera:
         """
         return str(randint(1, 100)) + "%"
 
-    def capture(self) -> None:
+    def capture(self) -> str:
         """
         Smile.
         """
-        self._save()
+        return self._save()
 
-    def _save(self) -> None:
+    def _save(self) -> str:
         """
         TODO: Create and save dummy file to disk
         """
+        now = datetime.now()
+        filename = now.strftime("%Y_%m_%d_%H_%M_%S")
+        return filename + ".jpg"
