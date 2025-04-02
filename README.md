@@ -7,7 +7,6 @@
 | `THERMISTOR`              |   True    | `bool` | Thermistor is present(true) or should be mocked                       |
 | `PHOTORESISTOR`           |   True    | `bool` | Photoresistor is present(true) or should be mocked                    |
 | `CAMERA`                  |   True    | `bool` | USB camera is present(true) or should be mocked                       |
-| `BATTERY_READ_INTERVAL_M` |   False   | `int`  | default `30`, Interval between reading battery status (in minutes)    |
 | `FONT_SIZE_RATIO`         |   False   | `int`  | default `5`, timestamp font size, relative to picture height          |
 | `MAILBOX`                 |   True    | `str`  | mailbox name to use - supported: `GMAIL`, `AWS`, `MOCK`- more below   |
 

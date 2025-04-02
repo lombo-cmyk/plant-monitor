@@ -15,9 +15,9 @@ from plant_common.mqtt.model import (
 )
 from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
+from plant_common.utils.timer import Timer
 
 from diagnostics.mock_devices import MockMCP3008
-from diagnostics.utils.timer import Timer
 
 
 class Service(BaseService):

@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from diagnostics.utils.timer import Timer
+from plant_common.utils.timer import Timer
 
 
 def test_is_counting_false():
