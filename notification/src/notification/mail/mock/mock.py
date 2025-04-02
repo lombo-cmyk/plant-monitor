@@ -21,3 +21,16 @@ class MockMailbox(AbstractMailbox):
             f.write(f"Topic: {self.message_content.topic}\n")
             f.write(f"Content: \n{self.message_content.content}\n")
         self.logger.info(f"Message {filename} saved.")
+
+
+def remove_old_mocked_emails():
+    directory_path = Path("/var/logs/emails")
+    if not directory_path.is_dir():
+        return
+    now = datetime.now().timestamp()
+    one_week_s = 7 * 86400
+    for file in directory_path.iterdir():
+        if file.is_dir():
+            continue
+        if file.stat().st_mtime < now - one_week_s:
+            file.unlink()
