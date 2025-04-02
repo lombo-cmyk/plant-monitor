@@ -5,7 +5,8 @@ import pytest
 from plant_common.service import BaseService
 
 
-def test_run_not_implemented():
+@patch("plant_common.service.sleep")
+def test_run_not_implemented(_):
     client = MagicMock()
     service = BaseService(name="test", logger=MagicMock(), client=client)
 
@@ -31,7 +32,8 @@ def test_run(mock_sleep, mock_schedule):
     assert mock_schedule.run_pending.call_count == 2
 
 
-def test_setup_mqtt():
+@patch("plant_common.service.sleep")
+def test_setup_mqtt(_):
     client = MagicMock()
     service = BaseService(name="test", logger=MagicMock(), client=client)
     service._subscribe = MagicMock()

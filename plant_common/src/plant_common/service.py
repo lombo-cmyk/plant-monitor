@@ -6,7 +6,7 @@ import schedule
 
 from plant_common.mqtt.model import NotificationCollector
 from plant_common.mqtt.mqtt import MqttClient
-from plant_common.utils import get_uptime
+from plant_common.utils.psutil import get_uptime
 
 
 class BaseService:
@@ -52,6 +52,8 @@ class BaseService:
         self._subscribe()
 
         self.client.loop_start()
+
+        sleep(5)  # let all services start MQTT connections before going further
 
     def run(self) -> None:
         """
