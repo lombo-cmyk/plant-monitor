@@ -8,6 +8,7 @@ from plant_common.mqtt.mqtt import MqttClient
 from plant_common.service import BaseService
 
 from notification.mail.manager import MessageManager
+from notification.mail.mock.mock import remove_old_mocked_emails
 from notification.utils.notification_center import NotificationCenter
 
 
@@ -52,6 +53,7 @@ class Service(BaseService):
     def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
         schedule.every().day.at("08:59").do(self.get_service_data)
         schedule.every().day.at("09:00").do(self.send_summary)
+        schedule.every().day.at("08:00").do(remove_old_mocked_emails)
 
     def get_service_data(self):
         self.client.publish("data/request")
