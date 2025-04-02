@@ -13,15 +13,23 @@ class MqttClient(Client):
         self.handlers = dict()
         self.on_message = self.on_message_custom
 
-    def publish(self, topic: str, payload: BaseModel) -> None:
-        super().publish(topic=topic, payload=payload.model_dump_json())
+    def publish(self, topic: str, payload: BaseModel | None = None) -> None:
+        if payload:
+            super().publish(topic=topic, payload=payload.model_dump_json())
+        else:
+            super().publish(topic=topic)
 
     def on_message_custom(self, client, userdata, msg) -> None:
         handler, payload_class = self.handlers[msg.topic]
         try:
-            handler(
-                self, msg.topic, payload_class.model_validate_json(msg.payload.decode())
-            )
+            if payload_class:
+                handler(
+                    self,
+                    msg.topic,
+                    payload_class.model_validate_json(msg.payload.decode()),
+                )
+            else:
+                handler(self, msg.topic, msg.payload.decode())
         except Exception:
             self.custom_logger.exception(f"Couldn't execute handler on {msg.topic}")
 
@@ -29,7 +37,7 @@ class MqttClient(Client):
         self,
         topic: str,
         handler: Callable[[str, BaseModel], Any],
-        payload_class: BaseModel,
+        payload_class: BaseModel | None = None,
     ) -> None:
         self.handlers[topic] = handler, payload_class
         super().subscribe(topic)

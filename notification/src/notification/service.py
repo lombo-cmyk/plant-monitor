@@ -37,6 +37,7 @@ class Service(BaseService):
             self.logger.warning("Runnign with MOCKED mailbox.")
 
     def _subscribe(self, *args, **kwargs) -> None:
+        super()._subscribe(*args, **kwargs)
         self.client.subscribe(
             topic="email/send",
             handler=self.handle_email_send,
@@ -49,7 +50,11 @@ class Service(BaseService):
         )
 
     def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
+        schedule.every().day.at("08:59").do(self.get_service_data)
         schedule.every().day.at("09:00").do(self.send_summary)
+
+    def get_service_data(self):
+        self.client.publish("data/request")
 
     def send_summary(self):
         self.logger.debug("Sending notification summary")
@@ -58,12 +63,18 @@ class Service(BaseService):
         )
         template = environment.get_template("summary.jinja2")
 
+        uptimes = ""
+        for service, uptime in self.gethered_notifications.uptimes.items():
+            uptimes += f"\n    - {service}: {uptime}"
+        pictures = ", ".join(self.gethered_notifications.pictures)
         intense_light = "".join(map(str, self.gethered_notifications.high_light))
         high_temp = "".join(map(str, self.gethered_notifications.high_temperature))
-        pictures = ", ".join(self.gethered_notifications.pictures)
 
         content = template.render(
-            intense_light=intense_light, high_temp=high_temp, pictures=pictures
+            uptimes=uptimes,
+            pictures=pictures,
+            intense_light=intense_light,
+            high_temp=high_temp,
         )
         topic = "Daily Raspberry summary"
         msg = MessageManager(
@@ -84,6 +95,6 @@ class Service(BaseService):
         msg.send()
 
     def handle_notification_gather(
-        self, client: MqttClient, topic: str, message: EmailContent
+        self, client: MqttClient, topic: str, message: NotificationCollector
     ):
         self.gethered_notifications.update(message)

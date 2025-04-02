@@ -4,7 +4,9 @@ from time import sleep
 
 import schedule
 
+from plant_common.mqtt.model import NotificationCollector
 from plant_common.mqtt.mqtt import MqttClient
+from plant_common.utils import get_uptime
 
 
 class BaseService:
@@ -25,7 +27,7 @@ class BaseService:
         signal.signal(signal.SIGTERM, self._shutdown)
 
     def _subscribe(self, *args, **kwargs) -> None:
-        raise NotImplementedError
+        self.client.subscribe("data/request", self._handle_data_request)
 
     def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
         raise NotImplementedError
@@ -70,3 +72,8 @@ class BaseService:
                 break
 
             sleep(1)
+
+    def _handle_data_request(self, client: MqttClient, topic: str, message):
+        data = {self.name: get_uptime()}
+        collector = NotificationCollector(uptime=data)
+        self.client.publish("notification/gather", collector)

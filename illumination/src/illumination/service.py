@@ -20,9 +20,6 @@ class Service(BaseService):
         super().__init__(name, logger, client)
         self.led = LED(14)
 
-    def _subscribe(self, *args, **kwargs) -> None:
-        pass
-
     def _setup_scheduled_jobs(self, *args, **kwargs) -> None:
         schedule.every().hour.at(":01").do(self.led_job)
 

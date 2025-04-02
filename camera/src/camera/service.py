@@ -29,6 +29,7 @@ class Service(BaseService):
         self.camera.get_battery_level()
 
     def _subscribe(self, *args, **kwargs) -> None:
+        super()._subscribe(*args, **kwargs)
         self.client.subscribe(
             topic="led/state", handler=self.handle_make_picture, payload_class=LedState
         )

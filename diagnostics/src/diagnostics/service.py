@@ -37,6 +37,7 @@ class Service(BaseService):
         self.temp_error_alert_timer = Timer(3600, self.dummy_timer)
 
     def _subscribe(self, *args, **kwargs) -> None:
+        super()._subscribe(*args, **kwargs)
         self.client.subscribe(
             topic="led/state", handler=self.handle_led_state, payload_class=LedState
         )

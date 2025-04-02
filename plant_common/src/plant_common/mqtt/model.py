@@ -40,3 +40,4 @@ class NotificationCollector(BaseModel):
     high_temperature: EventDetails | None = None
     high_light: EventDetails | None = None
     picture_path: str | None = None
+    uptime: dict[str, timedelta] | None = None
