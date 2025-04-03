@@ -11,7 +11,7 @@ build-base:
 	BUILDKIT_COLORS="run=light-cyan" docker build -f base/Dockerfile -t python_base:latest .
 
 start:
-	docker compose up -d
+	docker compose up -d --remove-orphans
 
 stop:
 	docker compose down
