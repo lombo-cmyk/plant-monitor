@@ -1,4 +1,4 @@
-# plants-grow
+# plant-monitor
 
 ## .env file content
 
