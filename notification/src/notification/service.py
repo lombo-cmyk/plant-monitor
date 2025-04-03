@@ -80,7 +80,7 @@ class Service(BaseService):
         )
         topic = "Daily Raspberry summary"
         msg = MessageManager(
-            to=config.get("RECEIVERS", ""),
+            to=config.get("RECEIVERS", [""]),
             topic=topic,
             content=content,
             severity=Severity.INFO,
@@ -92,7 +92,7 @@ class Service(BaseService):
 
     def handle_email_send(self, client: MqttClient, topic: str, message: EmailContent):
         msg = MessageManager(
-            to=config.get("RECEIVERS", ""), logger=self.logger, **message.model_dump()
+            to=config.get("RECEIVERS", [""]), logger=self.logger, **message.model_dump()
         )
         msg.send()
 
