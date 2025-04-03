@@ -24,8 +24,9 @@ class Camera:
             with self.mutex:
                 camera = gp.Camera()
                 camera.init()
-                fun(self, camera, *args, **kwargs)
+                ret = fun(self, camera, *args, **kwargs)
                 camera.exit()
+                return ret
 
         return wrapper
 

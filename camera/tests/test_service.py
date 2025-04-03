@@ -1,4 +1,6 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
+
+import gphoto2 as gp
 
 from plant_common.mqtt.model import LedState
 
@@ -20,7 +22,8 @@ def test_handle_make_picture(mock_camera: MagicMock, mock_sleep: MagicMock):
 
     mock_sleep.assert_called_once()
     service.camera.capture.assert_called_once()
-    service.client.publish.assert_called_once()
+    service.client.publish.assert_called()
+    assert service.client.publish.call_count == 2
 
 
 @patch("camera.service.sleep")
@@ -71,3 +74,45 @@ def test_handle_camera_error_new(_, service: Service):
     service.handle_camera_error("msg", "topic", MagicMock())
 
     service.client.publish.assert_called_once()
+
+
+@patch("camera.service.sleep")
+def test_handle_make_picture_focus_error(_, service: Service):
+    service.camera.capture = MagicMock(
+        side_effect=100 * [gp.GPhoto2Error(code=gp.GP_ERROR_CAMERA_BUSY)]
+    )
+    service.handle_camera_error = MagicMock()
+    expected_args = [call(f"Attempt {i+1}/5. Couldn't focus.") for i in range(4)]
+    service.handle_make_picture(
+        MagicMock(), MagicMock(), message=LedState.build(state=True)
+    )
+
+    service.client.publish.assert_called_once()
+    service.handle_camera_error.assert_called_once()
+    assert service.logger.warning.call_args_list == [
+        call("MOCK camera device selected"),
+        *expected_args,
+    ]
+
+
+@patch("camera.service.sleep")
+def test_handle_make_picture_focus_error_resolved(_, service: Service):
+    service.camera.capture = MagicMock(
+        side_effect=[
+            gp.GPhoto2Error(code=gp.GP_ERROR_CAMERA_BUSY),
+            gp.GPhoto2Error(code=gp.GP_ERROR_CAMERA_BUSY),
+            "FILE.jpg",
+        ]
+    )
+
+    service.handle_make_picture(
+        MagicMock(), MagicMock(), message=LedState.build(state=True)
+    )
+
+    service.client.publish.assert_called()
+    assert service.logger.warning.call_args_list == [
+        call("MOCK camera device selected"),
+        call("Attempt 1/5. Couldn't focus."),
+        call("Attempt 2/5. Couldn't focus."),
+    ]
+    assert service.client.publish.call_count == 2

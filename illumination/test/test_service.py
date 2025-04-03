@@ -25,14 +25,12 @@ def test_pre_run_exception(mock_led, service: Service):
     assert ret is False
 
 
-@patch("illumination.service.Thread")
-def test_led_job_happy_path(mock_thread, service: Service):
+def test_led_job_happy_path(service: Service):
     service.led = MagicMock()
     service._pre_run = MagicMock()
 
-    service.led_job()
+    service.led_on_job()
 
-    mock_thread.assert_called_once()
     service.led.on.assert_called_once()
     service._pre_run.assert_not_called()
 
@@ -40,7 +38,7 @@ def test_led_job_happy_path(mock_thread, service: Service):
 def test_led_job_no_led(service: Service):
     service._pre_run = MagicMock(return_value=False)
 
-    service.led_job()
+    service.led_on_job()
 
     service._pre_run.assert_called_once()
     assert service.logger.method_calls == []

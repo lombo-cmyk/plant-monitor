@@ -59,25 +59,37 @@ class Service(BaseService):
         if message.state is False:
             return
 
-        self.logger.info("Taking picture")
         sleep(3)  # let camera get the focus after light is turned on
-        try:
-            filename = self.camera.capture()
-        except gp.GPhoto2Error as e:
-            self.handle_camera_error(
-                msg="Exception while taking photo", topic="Couldn't take photo", exc=e
-            )
-            return
-        except Exception as e:
-            self.handle_camera_error(
-                msg="Unknown exception while taking photo",
-                topic="Unknown exception while using camera",
-                exc=e,
-            )
-            return
+        # Camera might struggle to get the focus right and might need a few retries
+        filename = None
+        RETRY_COUNT = 5
+        for i in range(RETRY_COUNT):
+            try:
+                filename = self.camera.capture()
+                break
+            except gp.GPhoto2Error as e:
+                if e.code == gp.GP_ERROR_CAMERA_BUSY and i < 4:
+                    self.logger.warning(f"Attempt {i+1}/{RETRY_COUNT}. Couldn't focus.")
+                    continue
+                self.handle_camera_error(
+                    msg="Exception while taking photo",
+                    topic="Couldn't take photo",
+                    exc=e,
+                )
+                break
+            except Exception as e:
+                self.handle_camera_error(
+                    msg="Unknown exception while taking photo",
+                    topic="Unknown exception while using camera",
+                    exc=e,
+                )
+                break
 
-        notification = NotificationCollector(picture_path=filename)
-        self.client.publish("notification/gather", notification)
+        self.client.publish("led/off")
+        if filename:
+            self.logger.info("Succesfully took a picture.")
+            notification = NotificationCollector(picture_path=filename)
+            self.client.publish("notification/gather", notification)
 
     def handle_camera_error(self, msg, topic, exc):
         self.logger.exception(msg)
